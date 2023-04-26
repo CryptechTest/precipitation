@@ -29,7 +29,7 @@ minetest.register_globalstep(function(dtime)
 
     for _, player in ipairs(minetest.get_connected_players()) do
         local player_name = player:get_player_name()
-        local ppos = player:getpos()
+        local ppos = player:get_pos()
         local pposy = math.floor(ppos.y) + 2 -- Precipitation when swimming
         local pposx = math.floor(ppos.x)
         local pposz = math.floor(ppos.z)
