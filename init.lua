@@ -3,11 +3,11 @@
 local YLIMIT = 1 -- Set to world's water level
 -- Particles are timed to disappear at this y
 -- Particles do not spawn when player's head is below this y
-local GSCYCLE = 0.5   -- Globalstep cycle (seconds)
-local FLAKES = 32     -- Snowflakes per cycle
-local DROPS = 128     -- Raindrops per cycle
-local RAINGAIN = 0.2  -- Rain sound volume
-local COLLIDE = false -- Whether particles collide with nodes
+local GSCYCLE = 0.5  -- Globalstep cycle (seconds)
+local FLAKES = 32    -- Snowflakes per cycle
+local DROPS = 128    -- Raindrops per cycle
+local RAINGAIN = 0.2 -- Rain sound volume
+local COLLIDE = true -- Whether particles collide with nodes
 
 precipitation = {}
 precipitation.players = {}
@@ -38,26 +38,38 @@ minetest.register_globalstep(function(dtime)
             for drop = 1, DROPS * 5 do
                 local spawny = pposy + 10 + math.random(0, 40) / 10
                 local extime = math.min((spawny - YLIMIT) / 10, 1.8)
-                minetest.add_particle({
-                    pos = {
-                        x = pposx - 24 + math.random(0, 48),
-                        y = spawny,
-                        z = pposz - 24 + math.random(0, 48)
-                    },
-                    velocity = {
-                        x = 0.0,
-                        y = -10.0,
-                        z = 0.0
-                    },
-                    acceleration = { x = 0, y = 0, z = 0 },
-                    expirationtime = extime,
-                    size = 2.8,
-                    collisiondetection = COLLIDE,
-                    collision_removal = true,
-                    vertical = true,
-                    texture = "precipitation_raindrop.png",
-                    playername = player:get_player_name()
-                })
+                local dpos = {
+                    x = pposx - 24 + math.random(0, 48),
+                    y = spawny,
+                    z = pposz - 24 + math.random(0, 48)
+                }
+
+                local clouds = player:get_clouds()
+                local cloud_height = clouds and clouds.height or 120
+                local tpos = {
+                    x = dpos.x,
+                    y = cloud_height - 1,
+                    z = dpos.z
+                }
+                local los, _ = minetest.line_of_sight(dpos, tpos)
+                if los then
+                    minetest.add_particle({
+                        pos = dpos,
+                        velocity = {
+                            x = 0.0,
+                            y = -10.0,
+                            z = 0.0
+                        },
+                        acceleration = { x = 0, y = 0, z = 0 },
+                        expirationtime = extime,
+                        size = 2.8,
+                        collisiondetection = COLLIDE,
+                        collision_removal = true,
+                        vertical = true,
+                        texture = "precipitation_raindrop.png",
+                        playername = player:get_player_name()
+                    })
+                end
             end
             if handles[player_name] and csound[player_name] ~= "storm" then
                 minetest.sound_stop(handles[player_name])
@@ -83,26 +95,37 @@ minetest.register_globalstep(function(dtime)
             for drop = 1, DROPS do
                 local spawny = pposy + 10 + math.random(0, 40) / 10
                 local extime = math.min((spawny - YLIMIT) / 10, 1.8)
-                minetest.add_particle({
-                    pos = {
-                        x = pposx - 24 + math.random(0, 48),
-                        y = spawny,
-                        z = pposz - 24 + math.random(0, 48)
-                    },
-                    velocity = {
-                        x = 0.0,
-                        y = -10.0,
-                        z = 0.0
-                    },
-                    acceleration = { x = 0, y = 0, z = 0 },
-                    expirationtime = extime,
-                    size = 2.4,
-                    collisiondetection = COLLIDE,
-                    collision_removal = true,
-                    vertical = true,
-                    texture = "precipitation_raindrop.png",
-                    playername = player:get_player_name()
-                })
+                local dpos = {
+                    x = pposx - 24 + math.random(0, 48),
+                    y = spawny,
+                    z = pposz - 24 + math.random(0, 48)
+                }
+                local clouds = player:get_clouds()
+                local cloud_height = clouds and clouds.height or 120
+                local tpos = {
+                    x = dpos.x,
+                    y = cloud_height - 1,
+                    z = dpos.z
+                }
+                local los, _ = minetest.line_of_sight(dpos, tpos)
+                if los then
+                    minetest.add_particle({
+                        pos = dpos,
+                        velocity = {
+                            x = 0.0,
+                            y = -10.0,
+                            z = 0.0
+                        },
+                        acceleration = { x = 0, y = 0, z = 0 },
+                        expirationtime = extime,
+                        size = 2.4,
+                        collisiondetection = COLLIDE,
+                        collision_removal = true,
+                        vertical = true,
+                        texture = "precipitation_raindrop.png",
+                        playername = player:get_player_name()
+                    })
+                end
             end
             if handles[player_name] and csound[player_name] ~= "rain" then
                 minetest.sound_stop(handles[player_name])
@@ -128,26 +151,38 @@ minetest.register_globalstep(function(dtime)
             for drop = 1, DROPS / 5 do
                 local spawny = pposy + 10 + math.random(0, 40) / 10
                 local extime = math.min((spawny - YLIMIT) / 10, 1.8)
-                minetest.add_particle({
-                    pos = {
-                        x = pposx - 16 + math.random(0, 32),
-                        y = spawny,
-                        z = pposz - 16 + math.random(0, 32)
-                    },
-                    velocity = {
-                        x = 0.0,
-                        y = -10.0,
-                        z = 0.0
-                    },
-                    acceleration = { x = 0, y = 0, z = 0 },
-                    expirationtime = extime,
-                    size = 2.0,
-                    collisiondetection = COLLIDE,
-                    collision_removal = true,
-                    vertical = true,
-                    texture = "precipitation_raindrop.png",
-                    playername = player:get_player_name()
-                })
+                local dpos = {
+                    x = pposx - 16 + math.random(0, 32),
+                    y = spawny,
+                    z = pposz - 16 + math.random(0, 32)
+                }
+
+                local clouds = player:get_clouds()
+                local cloud_height = clouds and clouds.height or 120
+                local tpos = {
+                    x = dpos.x,
+                    y = cloud_height - 1,
+                    z = dpos.z
+                }
+                local los, _ = minetest.line_of_sight(dpos, tpos)
+                if los then
+                    minetest.add_particle({
+                        pos = dpos,
+                        velocity = {
+                            x = 0.0,
+                            y = -10.0,
+                            z = 0.0
+                        },
+                        acceleration = { x = 0, y = 0, z = 0 },
+                        expirationtime = extime,
+                        size = 2.0,
+                        collisiondetection = COLLIDE,
+                        collision_removal = true,
+                        vertical = true,
+                        texture = "precipitation_raindrop.png",
+                        playername = player:get_player_name()
+                    })
+                end
             end
             if handles[player_name] and csound[player_name] ~= "sprinkle" then
                 minetest.sound_stop(handles[player_name])
@@ -170,29 +205,46 @@ minetest.register_globalstep(function(dtime)
                 end
             end
         elseif precip == "snow_storm" then
+            local spawny = pposy + 12
             local extime = math.min((pposy + 12 - YLIMIT) / 2, 9)
             for _ = 1, FLAKES * 2 do
-                minetest.add_particle({
-                    pos = {
-                        x = pposx - 24 + math.random(0, 48),
-                        y = pposy + 12,
-                        z = pposz - 24 + math.random(0, 48)
-                    },
-                    velocity = {
-                        x = (-20 + math.random(0, 40)) / 100,
-                        y = -2.0,
-                        z = (-20 + math.random(0, 40)) / 100
-                    },
-                    acceleration = { x = 0, y = 0, z = 0 },
-                    expirationtime = extime,
-                    size = 2.8,
-                    collisiondetection = COLLIDE,
-                    collision_removal = true,
-                    vertical = false,
-                    texture = "precipitation_snowflake" ..
-                        math.random(1, 12) .. ".png",
-                    playername = player:get_player_name()
-                })
+                local dpos = {
+                    x = pposx - 24 + math.random(0, 48),
+                    y = spawny,
+                    z = pposz - 24 + math.random(0, 48)
+                }
+
+                local clouds = player:get_clouds()
+                local cloud_height = clouds and clouds.height or 120
+                local tpos = {
+                    x = dpos.x,
+                    y = cloud_height - 1,
+                    z = dpos.z
+                }
+                local los, _ = minetest.line_of_sight(dpos, tpos)
+                if los then
+                    minetest.add_particle({
+                        pos = {
+                            x = pposx - 24 + math.random(0, 48),
+                            y = spawny,
+                            z = pposz - 24 + math.random(0, 48)
+                        },
+                        velocity = {
+                            x = (-20 + math.random(0, 40)) / 100,
+                            y = -2.0,
+                            z = (-20 + math.random(0, 40)) / 100
+                        },
+                        acceleration = { x = 0, y = 0, z = 0 },
+                        expirationtime = extime,
+                        size = 2.8,
+                        collisiondetection = COLLIDE,
+                        collision_removal = true,
+                        vertical = false,
+                        texture = "precipitation_snowflake" ..
+                            math.random(1, 12) .. ".png",
+                        playername = player:get_player_name()
+                    })
+                end
             end
             if handles[player_name] and csound[player_name] ~= nil then
                 minetest.sound_stop(handles[player_name])
@@ -200,29 +252,42 @@ minetest.register_globalstep(function(dtime)
                 csound[player_name] = nil
             end
         elseif precip == "snow" then
+            local spawny = pposy + 12
             local extime = math.min((pposy + 12 - YLIMIT) / 2, 9)
             for _ = 1, FLAKES do
-                minetest.add_particle({
-                    pos = {
-                        x = pposx - 24 + math.random(0, 48),
-                        y = pposy + 12,
-                        z = pposz - 24 + math.random(0, 48)
-                    },
-                    velocity = {
-                        x = (-20 + math.random(0, 40)) / 100,
-                        y = -2.0,
-                        z = (-20 + math.random(0, 40)) / 100
-                    },
-                    acceleration = { x = 0, y = 0, z = 0 },
-                    expirationtime = extime,
-                    size = 2.8,
-                    collisiondetection = COLLIDE,
-                    collision_removal = true,
-                    vertical = false,
-                    texture = "precipitation_snowflake" ..
-                        math.random(1, 12) .. ".png",
-                    playername = player:get_player_name()
-                })
+                local dpos = {
+                    x = pposx - 24 + math.random(0, 48),
+                    y = spawny,
+                    z = pposz - 24 + math.random(0, 48)
+                }
+
+                local clouds = player:get_clouds()
+                local cloud_height = clouds and clouds.height or 120
+                local tpos = {
+                    x = dpos.x,
+                    y = cloud_height - 1,
+                    z = dpos.z
+                }
+                local los, _ = minetest.line_of_sight(dpos, tpos)
+                if los then
+                    minetest.add_particle({
+                        pos = dpos,
+                        velocity = {
+                            x = (-20 + math.random(0, 40)) / 100,
+                            y = -2.0,
+                            z = (-20 + math.random(0, 40)) / 100
+                        },
+                        acceleration = { x = 0, y = 0, z = 0 },
+                        expirationtime = extime,
+                        size = 2.8,
+                        collisiondetection = COLLIDE,
+                        collision_removal = true,
+                        vertical = false,
+                        texture = "precipitation_snowflake" ..
+                            math.random(1, 12) .. ".png",
+                        playername = player:get_player_name()
+                    })
+                end
             end
             if handles[player_name] and csound[player_name] ~= nil then
                 minetest.sound_stop(handles[player_name])
@@ -230,29 +295,46 @@ minetest.register_globalstep(function(dtime)
                 csound[player_name] = nil
             end
         elseif precip == "flurry" then
+            local spawny = pposy + 12
             local extime = math.min((pposy + 12 - YLIMIT) / 2, 9)
             for _ = 1, FLAKES / 2 do
-                minetest.add_particle({
-                    pos = {
-                        x = pposx - 24 + math.random(0, 48),
-                        y = pposy + 12,
-                        z = pposz - 24 + math.random(0, 48)
-                    },
-                    velocity = {
-                        x = (-20 + math.random(0, 40)) / 100,
-                        y = -2.0,
-                        z = (-20 + math.random(0, 40)) / 100
-                    },
-                    acceleration = { x = 0, y = 0, z = 0 },
-                    expirationtime = extime,
-                    size = 2.8,
-                    collisiondetection = COLLIDE,
-                    collision_removal = true,
-                    vertical = false,
-                    texture = "precipitation_snowflake" ..
-                        math.random(1, 12) .. ".png",
-                    playername = player:get_player_name()
-                })
+                local dpos = {
+                    x = pposx - 24 + math.random(0, 48),
+                    y = spawny,
+                    z = pposz - 24 + math.random(0, 48)
+                }
+
+                local clouds = player:get_clouds()
+                local cloud_height = clouds and clouds.height or 120
+                local tpos = {
+                    x = dpos.x,
+                    y = cloud_height - 1,
+                    z = dpos.z
+                }
+                local los, _ = minetest.line_of_sight(dpos, tpos)
+                if los then
+                    minetest.add_particle({
+                        pos = {
+                            x = pposx - 24 + math.random(0, 48),
+                            y = pposy + 12,
+                            z = pposz - 24 + math.random(0, 48)
+                        },
+                        velocity = {
+                            x = (-20 + math.random(0, 40)) / 100,
+                            y = -2.0,
+                            z = (-20 + math.random(0, 40)) / 100
+                        },
+                        acceleration = { x = 0, y = 0, z = 0 },
+                        expirationtime = extime,
+                        size = 2.8,
+                        collisiondetection = COLLIDE,
+                        collision_removal = true,
+                        vertical = false,
+                        texture = "precipitation_snowflake" ..
+                            math.random(1, 12) .. ".png",
+                        playername = player:get_player_name()
+                    })
+                end
             end
             if handles[player_name] and csound[player_name] ~= nil then
                 minetest.sound_stop(handles[player_name])
