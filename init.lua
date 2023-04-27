@@ -70,7 +70,7 @@ minetest.register_globalstep(function(dtime)
                     "precipitation_rain",
                     {
                         to_player = player_name,
-                        gain = RAINGAIN * 1.75,
+                        gain = RAINGAIN * 1.5,
                         loop = true,
                     }
                 )
@@ -160,7 +160,7 @@ minetest.register_globalstep(function(dtime)
                     "precipitation_rain",
                     {
                         to_player = player_name,
-                        gain = RAINGAIN * 0.2,
+                        gain = RAINGAIN * 0.5,
                         loop = true,
                     }
                 )
