@@ -5,7 +5,7 @@ local YLIMIT = 1 -- Set to world's water level
 -- Particles do not spawn when player's head is below this y
 local GSCYCLE = 0.4  -- Globalstep cycle (seconds)
 local FLAKES = 26    -- Snowflakes per cycle
-local DROPS = 64     -- Raindrops per cycle
+local DROPS = 52     -- Raindrops per cycle
 local RAINGAIN = 0.2 -- Rain sound volume
 local COLLIDE = true -- Whether particles collide with nodes
 
