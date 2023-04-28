@@ -5,7 +5,7 @@ local YLIMIT = 1 -- Set to world's water level
 -- Particles do not spawn when player's head is below this y
 local GSCYCLE = 0.4  -- Globalstep cycle (seconds)
 local FLAKES = 26    -- Snowflakes per cycle
-local DROPS = 96     -- Raindrops per cycle
+local DROPS = 64     -- Raindrops per cycle
 local RAINGAIN = 0.2 -- Rain sound volume
 local COLLIDE = true -- Whether particles collide with nodes
 
@@ -37,13 +37,13 @@ minetest.register_globalstep(function(dtime)
             local pposz = math.floor(ppos.z)
             local precip = precipitation.players[player_name]
             if precip == "storm" then
-                for _ = 1, DROPS * 5 do
+                for _ = 1, DROPS * 3 do
                     local spawny = pposy + 10 + math.random(0, 40) / 10
                     local extime = math.min((spawny - YLIMIT) / 10, 1.8)
                     local dpos = {
-                        x = pposx - 24 + math.random(0, 48),
+                        x = pposx - 16 + math.random(0, 32),
                         y = spawny,
-                        z = pposz - 24 + math.random(0, 48)
+                        z = pposz - 16 + math.random(0, 32)
                     }
                     local tpos = {
                         x = dpos.x,
@@ -95,9 +95,9 @@ minetest.register_globalstep(function(dtime)
                     local spawny = pposy + 10 + math.random(0, 40) / 10
                     local extime = math.min((spawny - YLIMIT) / 10, 1.8)
                     local dpos = {
-                        x = pposx - 24 + math.random(0, 48),
+                        x = pposx - 16 + math.random(0, 32),
                         y = spawny,
-                        z = pposz - 24 + math.random(0, 48)
+                        z = pposz - 16 + math.random(0, 32)
                     }
                     local clouds = player:get_clouds()
                     local cloud_height = clouds and clouds.height or 120
@@ -147,7 +147,7 @@ minetest.register_globalstep(function(dtime)
                     end
                 end
             elseif precip == "sprinkle" then
-                for _ = 1, DROPS / 5 do
+                for _ = 1, DROPS / 4 do
                     local spawny = pposy + 10 + math.random(0, 40) / 10
                     local extime = math.min((spawny - YLIMIT) / 10, 1.8)
                     local dpos = {
