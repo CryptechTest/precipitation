@@ -56,7 +56,7 @@ minetest.register_globalstep(function(dtime)
                             pos = dpos,
                             velocity = {
                                 x = 0.0,
-                                y = -10.0,
+                                y = -12.0,
                                 z = 0.0
                             },
                             acceleration = { x = 0, y = 0, z = 0 },
@@ -112,7 +112,7 @@ minetest.register_globalstep(function(dtime)
                             pos = dpos,
                             velocity = {
                                 x = 0.0,
-                                y = -10.0,
+                                y = -11.0,
                                 z = 0.0
                             },
                             acceleration = { x = 0, y = 0, z = 0 },
@@ -330,7 +330,7 @@ minetest.register_globalstep(function(dtime)
                     handles[player_name] = nil
                     csound[player_name] = nil
                 end
-            else
+            elseif precip == "none" then
                 if handles[player_name] then
                     minetest.sound_stop(handles[player_name])
                     handles[player_name] = nil
