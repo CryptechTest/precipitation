@@ -3,11 +3,11 @@
 local YLIMIT = 1 -- Set to world's water level
 -- Particles are timed to disappear at this y
 -- Particles do not spawn when player's head is below this y
-local GSCYCLE = 0.4  -- Globalstep cycle (seconds)
-local FLAKES = 26    -- Snowflakes per cycle
-local DROPS = 52     -- Raindrops per cycle
-local RAINGAIN = 0.2 -- Rain sound volume
-local COLLIDE = true -- Whether particles collide with nodes
+local GSCYCLE = 0.4   -- Globalstep cycle (seconds)
+local FLAKES = 24     -- Snowflakes per cycle
+local DROPS = 48      -- Raindrops per cycle
+local RAINGAIN = 0.15 -- Rain sound volume
+local COLLIDE = true  -- Whether particles collide with nodes
 
 precipitation = {}
 precipitation.players = {}
@@ -32,12 +32,12 @@ minetest.register_globalstep(function(dtime)
         local ppos = player:get_pos()
         local pposy = math.floor(ppos.y) + 2 -- Precipitation when swimming
         local cloud_height = player:get_clouds().height or 120
-        if pposy < cloud_height then
+        if pposy < cloud_height and pposy > -75 then
             local pposx = math.floor(ppos.x)
             local pposz = math.floor(ppos.z)
             local precip = precipitation.players[player_name]
             if precip == "storm" then
-                for _ = 1, DROPS * 3 do
+                for _ = 1, DROPS * 2 do
                     local spawny = pposy + 10 + math.random(0, 40) / 10
                     local extime = math.min((spawny - YLIMIT) / 10, 1.8)
                     local dpos = {
@@ -151,9 +151,9 @@ minetest.register_globalstep(function(dtime)
                     local spawny = pposy + 10 + math.random(0, 40) / 10
                     local extime = math.min((spawny - YLIMIT) / 10, 1.8)
                     local dpos = {
-                        x = pposx - 16 + math.random(0, 32),
+                        x = pposx - 12 + math.random(0, 24),
                         y = spawny,
-                        z = pposz - 16 + math.random(0, 32)
+                        z = pposz - 12 + math.random(0, 24)
                     }
                     local tpos = {
                         x = dpos.x,
